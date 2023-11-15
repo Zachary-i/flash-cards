@@ -1,6 +1,15 @@
 #include <windows.h>
 
-static bool running;
+#define internal_function static
+#define local_persist static
+#define global_variable static
+
+global_variable bool running;
+
+internal_function void
+ResizeDIBSection(){
+
+}
 
 LRESULT CALLBACK
 mainWindowCallback(HWND hwnd,
@@ -12,6 +21,10 @@ mainWindowCallback(HWND hwnd,
   switch (uMsg){
   case WM_SIZE:
     OutputDebugStringA("WM_SIZE\n");
+    RECT clientRect;
+    GetClientRect(hwnd, &clientRect);
+    ResizeDIBSection(clientRect.right-clientRect.left,
+		     clientRect.bottom-clientRect.top);
     break;
   case WM_DESTROY:
     running = false;
